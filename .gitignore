@@ -1,0 +1,5 @@
+*.csv
+*.npz
+*.pickle
+*.pyc
+.ipynb_checkpoints/
