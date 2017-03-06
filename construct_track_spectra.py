@@ -1,15 +1,16 @@
+from read_large_csv import getstuff
 from trackcomponents import TrackComponents
 import csv
 import numpy as np
+import time
+from scipy.sparse import csr_matrix
 
-def scan_table(csvfile):
+
+def scan_table(csvfile, delimiter=',', rows=-1):
     tracks = TrackComponents()
 
-    with open(csvfile, 'r') as input:
-      reader = csv.reader(input, delimiter=',')
-      reader.next() # Skip header
-      for row in reader:
-        tracks.add(int(row[1]), int(row[0]))
+    for row in getstuff(csvfile, delimiter, rows):
+        tracks.add(int(row[2]), int(row[1]))
 
     return tracks
 
@@ -30,7 +31,17 @@ def construct_array(tracks):
 
     return spectra
 
-s = construct_array(scan_table('tests/2-tracks_6-features.csv'))
-tracks = np.divide(s, np.sum(s, axis=1, dtype=np.float64)[:, np.newaxis])
+#s = construct_array(scan_table('tests/2-tracks_6-features.csv',rows=3))
+start = time.time()
+s = construct_array(scan_table('detections-20141206.csv', delimiter='|'))
+end = time.time()
 print(s)
-print(tracks)
+print('Levou {} s para construir os espectros'.format(end-start))
+
+tracks = np.divide(s, np.sum(s, axis=1, dtype=np.float64)[:, np.newaxis])
+sparse_matrix = csr_matrix(tracks)
+np.savez('tracks.npz',
+         data = sparse_matrix.data,
+         indices = sparse_matrix.indices,
+         indptr = sparse_matrix.indptr,
+         shape = sparse_matrix.shape)
