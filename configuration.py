@@ -1,4 +1,5 @@
-n_samples = 10000
+n_records = 5000
+#n_records = None
 
 # Stage 1
 DETECTIONS = 'detections-20141206.csv'
