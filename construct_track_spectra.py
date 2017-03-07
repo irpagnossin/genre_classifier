@@ -48,4 +48,4 @@ np.savez('tracks.npz',
          indptr = sparse_matrix.indptr,
          shape = sparse_matrix.shape)
 
-pickle.dump(track_ids)
+pickle.dump(file('track_ids.pickle', 'wb'), track_ids)
