@@ -1,6 +1,11 @@
 class TrackComponents(object):
 
     def __init__(self):
+        # type: () -> object
+        """
+
+        :rtype: object
+        """
         self.tracks = dict()
         self.component_index = 0
         self.reindex_map = dict()
