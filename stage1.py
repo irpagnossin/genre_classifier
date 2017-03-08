@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from configuration import DETECTIONS
+from configuration import *
+from outputfilename import get_output_filename
 from scipy.sparse import csr_matrix
 from trackspectra import spectra, track_occurrences
 import numpy as np
@@ -53,7 +54,7 @@ if __name__ == '__main__':
         n = 1
 
     n_str = str(n)
-    tracks = 'output/tracks_' + n_str + '.npz'
-    track_ids = 'output/track_ids_' + n_str + '.pickle'
+    tracks = get_output_filename(n, TRACKS)
+    track_ids = get_output_filename(n, TRACK_IDS)
 
     build_spectra(DETECTIONS, tracks, track_ids, n)

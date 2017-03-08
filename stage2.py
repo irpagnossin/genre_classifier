@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from configuration import *
 from os.path import exists
+from outputfilename import get_output_filename
 from trackspectra import build_optimal_track2genre_map
 import sys
 import time
@@ -23,10 +25,10 @@ if __name__ == '__main__':
         n = 1
 
     n_str = str(n)
-    tracks = 'output/tracks_' + n_str + '.npz'
-    track_ids = 'output/track_ids_' + n_str + '.pickle'
-    silhouette = 'output/silhouette_' + n_str + '.csv'
-    track2genre = 'output/track2genre_' + n_str + '.pickle'
+    tracks = get_output_filename(n, TRACKS)
+    track_ids = get_output_filename(n, TRACK_IDS)
+    silhouette = get_output_filename(n, SILHOUETTE_ANALYSIS_RESULT)
+    track2genre = get_output_filename(n, TRACK2GENRES)
 
     if not exists(tracks):
         print('File {} does not exist. Execute "python stage1.py {}" to generate it.'.format(tracks, n_str))

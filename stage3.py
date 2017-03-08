@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from configuration import DETECTIONS
+from configuration import *
 from os.path import exists
+from outputfilename import get_output_filename
 import csv
 import pandas as pd
 import pickle
@@ -72,9 +73,9 @@ if __name__ == '__main__':
         n = 1
 
     n_str = str(n)
-    input_track2genre = 'output/track2genre_' + n_str + '.pickle'
-    output_track2genre = 'output/track2genre_' + n_str + '.csv'
-    output_source2genre = 'output/source2genre_' + n_str + '.csv'
+    input_track2genre = get_output_filename(n, TRACK2GENRES)
+    output_track2genre = get_output_filename(n, TRACK2GENRE_CSV)
+    output_source2genre = get_output_filename(n, SOURCE2GENRE_CSV)
 
     if not exists(input_track2genre):
         print('File {} does not exist. Execute "python stage2.py {}" to generate it.'.format(input_track2genre, n_str))

@@ -5,7 +5,6 @@ import time
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from scipy.sparse import csr_matrix
-from configuration import *
 
 
 def construct_track2genre_map(spectra, track_ids_filename, result, track2genre_filename, max_nclusters=10):
@@ -58,7 +57,6 @@ def construct_track2genre_map(spectra, track_ids_filename, result, track2genre_f
 
 
 if __name__ == '__main__':
-    #construct_track2genre_map(TRACKS, TRACK_IDS, SILHOUETTE_ANALYSIS_RESULT, TRACK_GENRES_BINARY)
 
     n_str = str(400)
     tracks = 'output/tracks_' + n_str + '.npz'
