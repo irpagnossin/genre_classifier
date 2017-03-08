@@ -5,7 +5,7 @@ from configuration import *
 from progressbar import printProgress
 from read_large_csv import get_row
 from scipy.sparse import csr_matrix
-from trackcomponents import TrackComponents
+from trackoccurrences import TrackOccurrences
 import numpy as np
 import pickle
 import time
@@ -21,7 +21,7 @@ def tracks_occurrence(csvfile, delimiter=',', rows=-1):
     :rtype: TrackComponents
     """
 
-    tracks = TrackComponents()
+    tracks = TrackOccurrences(300)
 
     for row in get_row(csvfile, delimiter, rows):
         try:
