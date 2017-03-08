@@ -29,18 +29,18 @@ def build_spectra(input_detections, output_tracks, output_track_ids, min_occur=1
 
     print('Constructing tracks spectra...')
     start = time.time()
-    track_ids, _spectra = spectra(tracks_dict)
+    _track_ids, _spectra = spectra(tracks_dict)
     end = time.time()
     print('It took {0:.3f} seconds to construct tracks spectra'.format(end-start))
 
     print('Saving spectra...')
-    tracks = np.divide(_spectra, np.sum(_spectra, axis=1, dtype=np.float64)[:, np.newaxis])
-    sparse_matrix = csr_matrix(tracks)
+    _tracks = np.divide(_spectra, np.sum(_spectra, axis=1, dtype=np.float64)[:, np.newaxis])
+    sparse_matrix = csr_matrix(_tracks)
     np.savez(output_tracks, data=sparse_matrix.data, indices=sparse_matrix.indices, indptr=sparse_matrix.indptr,
              shape=sparse_matrix.shape)
 
     print('Saving track_ids...')
-    pickle.dump(track_ids, file(output_track_ids, 'wb'), pickle.HIGHEST_PROTOCOL)
+    pickle.dump(_track_ids, file(output_track_ids, 'wb'), pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
