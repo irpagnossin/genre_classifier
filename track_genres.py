@@ -1,6 +1,7 @@
 import csv
 import numpy as np
 import pickle
+import time
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from scipy.sparse import csr_matrix
@@ -58,5 +59,14 @@ def construct_track2genre_map(spectra, track_ids_filename, result, track2genre_f
 
 if __name__ == '__main__':
     #construct_track2genre_map(TRACKS, TRACK_IDS, SILHOUETTE_ANALYSIS_RESULT, TRACK_GENRES_BINARY)
-    construct_track2genre_map('output/tracks_950.npz', 'output/track_ids_950.pickle', 'output/silhouette_950.csv',
-                              'output/track2genre.pickle', 30)
+
+    n_str = str(400)
+    tracks = 'output/tracks_' + n_str + '.npz'
+    track_ids = 'output/track_ids_' + n_str + '.pickle'
+    silhouette = 'output/silhouette_' + n_str + '.csv'
+    track2genre = 'output/track2genre_' + n_str + '.pickle'
+
+    start = time.time()
+    construct_track2genre_map(tracks, track_ids, silhouette, track2genre, 30)
+    end = time.time()
+    print('It took {} seconds'.format(end-start))
