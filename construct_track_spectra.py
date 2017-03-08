@@ -11,7 +11,7 @@ import pickle
 import time
 
 
-def tracks_occurrence(csvfile, delimiter=',', rows=-1):
+def tracks_occurrence(csvfile, delimiter=',', rows=-1, min_occur=1):
     """
     Iterate over detections data-set (CSV file) to construct an optimized representation of tracks spectra
     :param csvfile: the name of the CSV file containing detections, in format <created_at>,<audio_source_id>,<track_id>
@@ -21,13 +21,18 @@ def tracks_occurrence(csvfile, delimiter=',', rows=-1):
     :rtype: TrackComponents
     """
 
-    tracks = TrackOccurrences(300)
+    tracks = TrackOccurrences(min_occur)
 
+    count = 0
     for row in get_row(csvfile, delimiter, rows):
         try:
             track_id = int(row[2])
             source_id = int(row[1])
             tracks.add(track_id, source_id)
+
+            count += 1
+            if count % 100 == 0:
+                time.sleep(0)
 
         except IndexError:  # Ignore malformed rows
             pass
@@ -69,11 +74,10 @@ def to_array(tracks):
     return track_ids, spectra
 
 
-if __name__ == '__main__':
-
+def construct_spectra(input_detections, output_tracks, output_track_ids, min_occur=1):
     print('Inspecting detections data-set...')
     start = time.time()
-    tracks_dict = tracks_occurrence(DETECTIONS, delimiter='|')
+    tracks_dict = tracks_occurrence(input_detections, delimiter='|', min_occur=min_occur)
     end = time.time()
     print('It took {0:.3f} seconds to inspect detections data-set'.format(end-start))
 
@@ -86,8 +90,12 @@ if __name__ == '__main__':
     print('Saving spectra...')
     tracks = np.divide(spectra, np.sum(spectra, axis=1, dtype=np.float64)[:, np.newaxis])
     sparse_matrix = csr_matrix(tracks)
-    np.savez(TRACKS, data=sparse_matrix.data, indices=sparse_matrix.indices, indptr=sparse_matrix.indptr,
+    np.savez(output_tracks, data=sparse_matrix.data, indices=sparse_matrix.indices, indptr=sparse_matrix.indptr,
              shape=sparse_matrix.shape)
 
     print('Saving track_ids...')
-    pickle.dump(track_ids, file(TRACK_IDS, 'wb'), pickle.HIGHEST_PROTOCOL)
+    pickle.dump(track_ids, file(output_track_ids, 'wb'), pickle.HIGHEST_PROTOCOL)
+
+
+if __name__ == '__main__':
+    construct_spectra(DETECTIONS, TRACKS, TRACK_IDS, 1)

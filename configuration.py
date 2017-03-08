@@ -7,6 +7,7 @@ TRACKS = 'tracks.npz'
 # Stage 2
 TRACK_IDS = 'track_ids.pickle'
 TRACK_GENRES_BINARY = 'track_genres.pickle'
+SILHOUETTE_ANALYSIS_RESULT = 'silhouette.csv'
 
 # Stage 3
 SOURCE_GENRES = 'source_genres.csv'
