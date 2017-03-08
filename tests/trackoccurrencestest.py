@@ -138,5 +138,37 @@ class TestTrackOccurrencesMinimum2(unittest.TestCase):
             d.get_occurrence(2, 2)
 
 
+class TestTrackOccurrencesMinimum10(unittest.TestCase):
+
+    def test_1(self):
+        d = TrackOccurrences(10)
+
+        for i in range(9):
+            d.add(2, 5)
+
+        for i in range(15):
+            d.add(3, 5)
+
+        with self.assertRaises(KeyError):
+            d.get_occurrence(2, 5)
+
+        with self.assertRaises(KeyError):
+            d.get_occurrences(2)
+
+        self.assertEqual(d.get_occurrence(3, 5), 15)
+        self.assertEqual(d.get_occurrences(3), {0: 15})
+
+        d.add(2, 5)
+
+        self.assertEqual(d.get_occurrence(2, 5), 10)
+        self.assertEqual(d.get_occurrences(2), {0: 10})
+
+        for i in range(15):
+            d.add(3, 200)
+
+        self.assertEqual(d.get_occurrence(3, 5), 15)
+        self.assertEqual(d.get_occurrence(3, 200), 15)
+        self.assertEqual(d.get_occurrences(3), {0: 15, 1: 15})
+
 if __name__ == '__main__':
     unittest.main()
