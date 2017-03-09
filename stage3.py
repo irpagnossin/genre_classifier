@@ -38,11 +38,16 @@ def build_source2genre_map(detections, input_map, output_map):
     :return: None
     """
 
-    genre_ids = pickle.load(file(input_map, 'rb'))
+    track2genre = pickle.load(file(input_map, 'rb'))
 
     df = pd.read_csv(detections, delimiter="|")
-    df['genre_id'] = df['track_id'].apply(lambda track_id: genre_ids[track_id] if track_id in genre_ids else -1)
-    doi = df[['audio_source_id', 'genre_id', 'created_at']]  # Data of interest
+    df['genre_id'] = df['track_id'].apply(lambda track_id: track2genre[track_id] if track_id in track2genre else -1)  # TODO: problema!!!!
+
+    #n_unknown = len(df[df['genre_id'] == -1])  # Unknown radio-stations
+    #p_unknown = 100.0 * n_unknown / len(df)  # Unknown radio-stations (%)
+    #print('# of unclassified audio-sources: {} ({}%)'.format(n_unknown, p_unknown))
+
+    doi = df[df['genre_id'] >= 0][['audio_source_id', 'genre_id', 'created_at']]  # Data of interest
     df2 = doi.groupby(['audio_source_id', 'genre_id']).agg(['count'])
     df3 = df2['created_at']['count']
     df3 = df3.reset_index()
@@ -50,6 +55,7 @@ def build_source2genre_map(detections, input_map, output_map):
     __source_ids = []
     __genre_ids = []
 
+    # Defines the radio-station genre as the genre of the most frequent track
     for name, group in df3.groupby('audio_source_id'):
         idx = group['count'].idxmax()
 
@@ -58,6 +64,19 @@ def build_source2genre_map(detections, input_map, output_map):
 
     output = pd.DataFrame({'audio_source_id': __source_ids, 'genre_id': __genre_ids})
     output.to_csv(output_map, index=False)
+
+
+
+
+
+def invert(dictionary):
+    """
+    Inverts a dictionary
+    :param dictionary: dictionary to invert
+    :return: inverted dictionary
+    """
+
+    return {v: k for (v, k) in dictionary.iteritems()}
 
 
 if __name__ == '__main__':
@@ -83,3 +102,4 @@ if __name__ == '__main__':
 
     build_track2genre_map(input_track2genre, output_track2genre)
     build_source2genre_map(DETECTIONS, input_track2genre, output_source2genre)
+    summary(DETECTIONS, output_track2genre, output_source2genre)
