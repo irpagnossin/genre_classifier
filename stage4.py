@@ -71,9 +71,13 @@ def main():
     """
 
     try:
-        n = sys.argv[1]  # Occurrence threshold
+        n = int(sys.argv[1])  # Occurrence threshold
     except IndexError:
         n = 1
+    except ValueError:
+        n = 1
+
+    assert (type(n) == int)
 
     n_str = str(n)
     track2genre_csv = get_output_filename(n, TRACK2GENRE_CSV)

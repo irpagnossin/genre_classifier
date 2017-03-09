@@ -65,15 +65,19 @@ def build_source2genre_map(detections, input_map, output_map):
 
 def main():
     """
-    Builds the CSV files containing the mappings in format <audio_source_id>,<genre_id> and <track_id>,<genre_id>.
+    Builds CSV files containing the mappings in format <audio_source_id>,<genre_id> and <track_id>,<genre_id>.
     It reads file 'output/track2genre_x.pickle', where x is the occurrence threshold.
     It writes files 'output/track2genre_x.csv' and 'output/source2genre_x.csv'.
     """
 
     try:
-        n = sys.argv[1]  # Occurrence threshold
+        n = int(sys.argv[1])  # Occurrence threshold
     except IndexError:
         n = 1
+    except ValueError:
+        n = 1
+
+    assert (type(n) == int)
 
     n_str = str(n)
     input_track2genre = get_output_filename(n, TRACK2GENRES)
@@ -84,6 +88,7 @@ def main():
         print('File {} does not exist. Execute "python stage2.py {}" to generate it.'.format(input_track2genre, n_str))
         sys.exit(-1)
 
+    print('Building CSV files containing mappings track->genre and source->genre...')
     build_track2genre_map(input_track2genre, output_track2genre)
     build_source2genre_map(DETECTIONS, input_track2genre, output_source2genre)
     summary(DETECTIONS, output_track2genre, output_source2genre)

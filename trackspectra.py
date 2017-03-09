@@ -56,6 +56,10 @@ def spectra(tracks):
 
     n_tracks = tracks.n_tracks()
     n_components = tracks.n_components()
+
+    assert(n_tracks > 0)
+    assert(n_components > 0)
+
     print('{} tracks x {} features'.format(n_tracks, n_components))
 
     __spectra = np.zeros(shape=(n_tracks, n_components))
