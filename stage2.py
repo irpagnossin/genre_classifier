@@ -9,7 +9,7 @@ import sys
 import time
 
 
-if __name__ == '__main__':
+def main():
     """
     Builds the optimal map track->genre based on k-means and silhouette analysis.
     As result, it writes the following files:
@@ -43,3 +43,7 @@ if __name__ == '__main__':
     build_optimal_track2genre_map(tracks, track_ids, silhouette, track2genre, 30)  # <-- The important thing here!
     end = time.time()
     print('It took {} seconds'.format(end-start))
+
+
+if __name__ == '__main__':
+    main()

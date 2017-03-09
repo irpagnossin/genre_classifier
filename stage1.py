@@ -43,7 +43,7 @@ def build_spectra(input_detections, output_tracks, output_track_ids, min_occur=1
     pickle.dump(_track_ids, file(output_track_ids, 'wb'), pickle.HIGHEST_PROTOCOL)
 
 
-if __name__ == '__main__':
+def main():
     """
     Builds spectra for a given occurrence threshold (argument).
     """
@@ -57,4 +57,9 @@ if __name__ == '__main__':
     tracks = get_output_filename(n, TRACKS)
     track_ids = get_output_filename(n, TRACK_IDS)
 
+    print('Building spectra for tracks with occurrence threshold >= {}...'.format(n_str))
+
     build_spectra(DETECTIONS, tracks, track_ids, n)
+
+if __name__ == '__main__':
+    main()

@@ -63,7 +63,7 @@ def build_source2genre_map(detections, input_map, output_map):
     output.to_csv(output_map, index=False)
 
 
-if __name__ == '__main__':
+def main():
     """
     Builds the CSV files containing the mappings in format <audio_source_id>,<genre_id> and <track_id>,<genre_id>.
     It reads file 'output/track2genre_x.pickle', where x is the occurrence threshold.
@@ -87,3 +87,7 @@ if __name__ == '__main__':
     build_track2genre_map(input_track2genre, output_track2genre)
     build_source2genre_map(DETECTIONS, input_track2genre, output_source2genre)
     summary(DETECTIONS, output_track2genre, output_source2genre)
+
+
+if __name__ == '__main__':
+    main()
