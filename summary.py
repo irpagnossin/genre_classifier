@@ -9,6 +9,13 @@ import sys
 
 
 def summary(detections, track2genre, source2genre):
+    """
+    Evaluates and prints statistic summary
+    :param detections: CSV file with detections, in format <created_at>|<audio_source_id>|<track_id>
+    :param track2genre: CSV file with format <track_id>,<genre_id>, generated at stage3.py
+    :param source2genre: CSV file with format <audio_source_id>,<genre_id>, generated at stage3.py
+    :return: None
+    """
 
     detections_df = pd.read_csv(detections, delimiter='|')
     n_tracks = len(set(detections_df['track_id']))
@@ -30,7 +37,11 @@ def summary(detections, track2genre, source2genre):
     print('Total sources: {}'.format(n_sources))
     print('Clusterized sources: {0} ({1:.2f}%)'.format(n_classified_sources, p_classified_sources))
 
+
 if __name__ == '__main__':
+    """
+    Evaluates and prints statistic summary
+    """
 
     try:
         n = sys.argv[1]  # Occurrence threshold

@@ -3,6 +3,12 @@
 
 
 class TrackOccurrences(object):
+    """
+    TrackOccurrences keeps track of the occurrence of each audio track in each radio-station.
+    First it counts the occurrences in a temporary dictionary, and, whenever the count surpasses occurrence threshold,
+    it goes to a definitive dictionary. Also, it keeps track of all radio-station (features) present in this
+    definitive dictionary. With it, it is easy to construct a np.array of spectra: see stage1.py::build_spectra.
+    """
 
     def __init__(self, minimum=1):
         # type: () -> object
