@@ -10,3 +10,4 @@ SILHOUETTE_ANALYSIS_RESULT = 'silhouette.csv'
 # Stage 3
 SOURCE2GENRE_CSV = 'source2genre.csv'
 TRACK2GENRE_CSV = 'track2genre.csv'
+TRACK2GENRE_RECAP_CSV = 'track2genre_recap.csv'
