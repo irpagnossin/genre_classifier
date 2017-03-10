@@ -18,8 +18,8 @@ def recap(detections_csv, track2genre_csv, source2genre_csv, track2genre_recap_c
     """
 
     detections = pd.read_csv(detections_csv, sep='|')
-    track2genre = pd.read_csv(track2genre_csv)
-    source2genre = pd.read_csv(source2genre_csv)
+    track2genre = pd.read_csv(track2genre_csv, sep='|')
+    source2genre = pd.read_csv(source2genre_csv, sep='|')
 
     mask = np.logical_not(detections['track_id'].isin(track2genre['track_id']))
     unknown_tracks = detections[mask]
@@ -49,7 +49,7 @@ def recap(detections_csv, track2genre_csv, source2genre_csv, track2genre_recap_c
 
     g2 = g[g['genre_id'] >= 0]
 
-    g2.to_csv(track2genre_recap_csv, columns=['track_id', 'genre_id'])
+    g2.to_csv(track2genre_recap_csv, columns=['track_id', 'genre_id'], sep='|', index=False)
 
     n_tracks_ok = len(track2genre)
     n_tracks_total = len(set(detections['track_id']))

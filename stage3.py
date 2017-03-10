@@ -22,7 +22,7 @@ def build_track2genre_map(input_map, output_map):
     genre_ids = pickle.load(file(input_map, 'rb'))
 
     with open(output_map, 'w') as csv_file:
-        writer = csv.writer(csv_file)
+        writer = csv.writer(csv_file, delimiter='|')
         writer.writerow(['track_id', 'genre_id'])
         for key, value in genre_ids.items():
             writer.writerow([key, value])
@@ -60,7 +60,7 @@ def build_source2genre_map(detections, input_map, output_map):
         __genre_ids.append(df3.iloc[idx]['genre_id'])
 
     output = pd.DataFrame({'audio_source_id': __source_ids, 'genre_id': __genre_ids})
-    output.to_csv(output_map, index=False)
+    output.to_csv(output_map, sep='|', index=False)
 
 
 def main():

@@ -44,7 +44,7 @@ def main():
 
     print('Generating optimal track->genre map for tracks with occurrence threshold >= {}...'.format(n_str))
     start = time.time()
-    build_optimal_track2genre_map(tracks, track_ids, silhouette, track2genre, 30)  # <-- The important thing here!
+    build_optimal_track2genre_map(tracks, track_ids, silhouette, track2genre, 2)  # <-- The important thing here!
     end = time.time()
     print('It took {} seconds'.format(end-start))
 
