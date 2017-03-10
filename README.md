@@ -62,6 +62,16 @@ O algoritmo roda em 4 estágios, sendo que cada estágio consome os insumos gera
 - Estágio 3: utiliza o mapeamento track_id -> genre_id para identificar as trilhas de áudio e estações de rádio no arquivo de detecções. Como resultado, gera os arquivos output/_threshold_/track2genre.csv e output/_threshold_/source2genre.csv.
 - Estágio 4: amplia a cobertura de trilhas de áudio para aquelas trilhas cuja frequência absoluta tenham ficado abaixo do _threshold_. Isso é feito usando o mapeamento audio_source_id -> genre_id, gerado no estágio anterior.
 
+Utilização
+==========
+
+* Salve o arquivo de detecções, ou um link para ele, na raiz do repositório. Ou altere o nome/caminho para esse arquivo em configuration.py
+* Execute "python stage1.py 200" para executar o estágio 1 com frequência absoluta mínima de 100 (ie, apenas trilhas de áudio que ocorreram 100 vezes ou mais serão analisadas)
+* Execute o estágio 2 com "python stage2.py 200".
+* Execute o estágio 3 com "python stage3.py 200".
+* Execute o estágio 4 com "python stage4.py 200".
+
+
 Arquivos gerados
 ================
 
