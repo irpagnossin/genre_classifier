@@ -1,5 +1,7 @@
 set datafile separator ","
 set key autotitle columnhead
 set autoscale
-plot 'output/silhouette_900.csv' with linespoints linestyle 7, 'output/silhouette_800.csv' with linespoints linestyle 7 lt rgb "green", 'output/silhouette_700.csv' with linespoints linestyle 7 lt rgb "green", 'output/silhouette_600.csv' with linespoints linestyle 7 lt rgb "green", 'output/silhouette_500.csv' with linespoints linestyle 7 lt rgb "green", 'output/silhouette_400.csv' with linespoints linestyle 7 lt rgb "green", 'output/silhouette_300.csv' with linespoints linestyle 7 lt rgb "green", 'output/silhouette_200.csv' with linespoints linestyle 7 lt rgb "green"
+set xlabel "# of genres"
+set ylabel "silhouette score"
+plot 'output/200/silhouette.csv' with linespoints linestyle 7 lt 2 title 'f >= 200', 'output/900/silhouette.csv' with linespoints linestyle 7 lt 1 title 'f >= 900'
 pause -1

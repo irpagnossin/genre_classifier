@@ -80,6 +80,8 @@ Resultados
 
 Quantidade de clusters: 2 a 4, sendo 2 o mais provável. Esse resultado foi consistente para todos os <threshold>, de 100 a 900: o gráfico abaixo mostra a pontuação do ajuste k-means para alguns valores de <threshold>. 
 
+[Diagnóstico resumido da análise de silhueta][output/silhouette.png]
+
 Próximos passos
 ===============
 
