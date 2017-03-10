@@ -80,7 +80,7 @@ Resultados
 
 Quantidade de clusters: 2 a 4, sendo 2 o mais provável. Esse resultado foi consistente para todos os <threshold>, de 100 a 900: o gráfico abaixo mostra a pontuação do ajuste k-means para <threshold> >= 200 e <threshold> >= 900. De modo geral, quanto maior o <threshold>, maior é a certeza de que a quantidade de gêneros presentes é 2. 
 
-![Diagnóstico resumido da análise de silhueta][output/silhouette.png]
+![Diagnóstico resumido da análise de silhueta][silhouette.png]
 
 Próximos passos
 ===============
