@@ -57,28 +57,28 @@ Funcionamento básico
 ====================
 
 O algoritmo roda em 4 estágios, sendo que cada estágio consome os insumos gerados no estágio anterior, exceto pelo primeiro, que começa com o arquivo de deteções:
-- Estágio 1: avalia as detecções e constrói os espectros das músicas numa grande matriz de dimensões n_tracks x n_sources, onde n_tracks é a quantidade de trilhas de áudio distintas (são as amostras do "vetor de gênero") e n_sources é a quantidade de estações de rádio distintas (são as componentes do vetor). Execute "python stage1.py <threshold>", onde <threshold> é a quantidade mínima de vezes que uma trilha de áudio precisa estar presente para que seja considerada na análise. O padrão é 1, mas esse caso requer grande quantidade de memória para ser executado (> 8 GiB). Na verdade, qualquer <theshold> inferior a aproximadamente 100 requer mais de 8 GiB.
+- Estágio 1: avalia as detecções e constrói os espectros das músicas numa grande matriz de dimensões n_tracks x n_sources, onde n_tracks é a quantidade de trilhas de áudio distintas (são as amostras do "vetor de gênero") e n_sources é a quantidade de estações de rádio distintas (são as componentes do vetor). Execute "python stage1.py _threshold_", onde _threshold_ é a quantidade mínima de vezes que uma trilha de áudio precisa estar presente para que seja considerada na análise. O padrão é 1, mas esse caso requer grande quantidade de memória para ser executado (> 8 GiB). Na verdade, qualquer _threshold_ inferior a aproximadamente 100 requer mais de 8 GiB.
 - Estágio 2: executa o algoritmo de classificação não supervisionado (k-means) várias vezes, uma vez para cada quantidade de gênero (ie, classes ou _clusters_), de 2 até 29, e identifica a quantidade de gêneros mais provável.
-- Estágio 3: utiliza o mapeamento track_id -> genre_id para identificar as trilhas de áudio e estações de rádio no arquivo de detecções. Como resultado, gera os arquivos output/<threshold>/track2genre.csv e output/<threshold>/source2genre.csv.
-- Estágio 4: amplia a cobertura de trilhas de áudio para aquelas trilhas cuja frequência absoluta tenham ficado abaixo do <threshold>. Isso é feito usando o mapeamento audio_source_id -> genre_id, gerado no estágio anterior.
+- Estágio 3: utiliza o mapeamento track_id -> genre_id para identificar as trilhas de áudio e estações de rádio no arquivo de detecções. Como resultado, gera os arquivos output/_threshold_/track2genre.csv e output/_threshold_/source2genre.csv.
+- Estágio 4: amplia a cobertura de trilhas de áudio para aquelas trilhas cuja frequência absoluta tenham ficado abaixo do _threshold_. Isso é feito usando o mapeamento audio_source_id -> genre_id, gerado no estágio anterior.
 
 Arquivos gerados
 ================
 
-Arquivos gerados, todos na pasta output/<threshold>/, são:
+Arquivos gerados, todos na pasta output/_threshold_/, são:
 - tracks.npz: é gerado no estágio 1. Contém os espectros de todas as trilhas de áudio, numa única matriz esparsa np.array. O formato é conveniente para tratamento, no estágio seguinte.
 - track_ids.pickle: lista dos track_id existentes em tracks.npz, na mesma ordem. É utilizado para associar os genre_id, gerados no estágio 2, com os track_id.
 - track2genre.pickle: mapeamento track_id->genre_id (genre_id >= 0), obtido pelo ajuste k-means à melhor quantidade de gêneros (classes ou _clusters_) aos espectros em tracks.npz
 - silhouette.csv: diagnóstico da análise de silhueta, evidenciando a quantidade de gêneros selecionada pelo algoritmo.
 - track2genre.csv: arquivo CSV relacionando track_id com genre_id. É gerado no estágio 3.
 - source2genre.csv: arquivo CSV relacionando audio_source_id com genre_id. É gerado no estágio 3. Por definição, o gênero da estação de rádio é igual ao gênero da trilha de áudio mais frequente nela.
-- track2genre_recap.csv: é gerado no estágio 4. Contém os track_id cuja frequência absoluta é inferior ao <threshold>, mas que devido ao mapeamento audio_source_id -> genre_id, gerado no estágio anterior, puderam ter seu gênero musical estimado (nesse caso, o gênero da trilha de áudio foi definido como sendo o gênero da estação de rádio onde ela mais ocorreu).
+- track2genre_recap.csv: é gerado no estágio 4. Contém os track_id cuja frequência absoluta é inferior ao _threshold_, mas que devido ao mapeamento audio_source_id -> genre_id, gerado no estágio anterior, puderam ter seu gênero musical estimado (nesse caso, o gênero da trilha de áudio foi definido como sendo o gênero da estação de rádio onde ela mais ocorreu).
 
 
 Resultados
 ==========
 
-Quantidade de clusters: 2 a 4, sendo 2 o mais provável. Esse resultado foi consistente para todos os <threshold>, de 100 a 900: o gráfico abaixo mostra a pontuação do ajuste k-means para <threshold> >= 200 e <threshold> >= 900. De modo geral, quanto maior o <threshold>, maior é a certeza de que a quantidade de gêneros presentes é 2. 
+Quantidade de clusters: 2 a 4, sendo 2 o mais provável. Esse resultado foi consistente para todos os _threshold_, de 100 a 900: o gráfico abaixo mostra a pontuação do ajuste k-means para _threshold_ >= 200 e _threshold_ >= 900. De modo geral, quanto maior o _threshold_, maior é a certeza de que a quantidade de gêneros presentes é 2. 
 
 ![Diagnóstico resumido da análise de silhueta](https://github.com/irpagnossin/genre_classifier/blob/track_spectra/silhouette_diagnostic.png)
 
@@ -86,6 +86,6 @@ Próximos passos
 ===============
 
 - Inverter a análise: ao invés de construir espectros das trilhas de áudio, construir espectros das rádios. Essa abordagem pode oferecer um comparativo para a solução implementada, e requer apenas refatoração do código já implementado.
-- Executar o k-means na distância entre os vetores de gênero: como cada trilha de áudio define um vetor de gênero num espaço euclidiano, podemos calcular facilmente a "distância" entre duas trilhas de áudio (trilhas próximas teriam gêneros similares). Isso simplificaria a análise, permitindo a execução do algoritmo para <threshold> = 1 em máquinas menores. Contudo, como as n_sources dimensões seriam todas projetadas numa única dimensão (escalar), o resultado pode não ser muito bom, e teríamos de utilizá-lo apenas como insumo para outras análises.
+- Executar o k-means na distância entre os vetores de gênero: como cada trilha de áudio define um vetor de gênero num espaço euclidiano, podemos calcular facilmente a "distância" entre duas trilhas de áudio (trilhas próximas teriam gêneros similares). Isso simplificaria a análise, permitindo a execução do algoritmo para _threshold_ = 1 em máquinas menores. Contudo, como as n_sources dimensões seriam todas projetadas numa única dimensão (escalar), o resultado pode não ser muito bom, e teríamos de utilizá-lo apenas como insumo para outras análises.
 - Implementar o estágio 2 utilizando Tensorflow, visando agilizar a execução (atualmente, o algoritmo de machine learning utiliza a biblioteca scikit-learn) e, possivelmente, clusterizar o processamento.
 - ETL no estágio 1: escrever algoritmo para construir, iterativamente, o espectro compacto das trilhas de áudio (objeto TrackOccurrences). Isso pode ser feito facilmente, sem muito ônus de processamento, de modo a agilizar a execução dos estágios seguintes.
